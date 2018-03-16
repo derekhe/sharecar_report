@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>大数据看共享汽车——GoFun篇</title>
+  <script src="libs/lodash.min.js"></script>
+  <script src="constants.js"></script>
+  <script src="libs/echarts.min.js"></script>
+  <script type="text/javascript"
+          src="http://api.map.baidu.com/getscript?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM&services=&t=20180201111639"></script>
+  <script type="text/javascript"
+          src="http://echarts.baidu.com/examples/vendors/echarts/extension/bmap.js?_v_=1519710853840"></script>
+  <link rel="stylesheet" type="text/css" href="report.css">
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=edpTD0estvF7xjyFZ1Vda9Nme7Kif0k7"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+  <script type="text/javascript" src="libs/moment-with-locales.min.js"></script>
+</head>
+<body>
+<script>
+  themeName = 'default';
+</script>
+
+<div class="main">
+  <h1>大数据看共享汽车——GoFun篇</h1>
+
+  <p>去年2月份我做过共享单车的数据分析，也分析出一些有意思的点。从2017年10月1日开始，历时3个多月，我收集了GoFun和EVCard共享汽车的公开数据。下面整理成一个动态的报告，一起看一下共享汽车的现状。</p>
+
+  <p class="warning">注：该数据分析及报告仅代表个人意见，仅供参考，数据来自于API请求的结果，只包含公开的信息，不涉及用户信息。引用、使用该报告引起的任何后果（包括但不限于版权、侵犯法律法规）等，由使用方承担。</p>
+
+  <h2>基本信息</h2>
+
+  <p>
+    GoFun出行是首汽集团针对移动出行推出的一款新能源共享汽车产品，秉承首汽集团作为全国最大出行服务运营企业的多年经验和优势资源，响应政府号召，把握“新能源+车联网”的全趋势，致力于整合用户碎片化的用车需求，提供便捷、绿色、快速、经济的出行服务。
+    GoFun出行是共享行业新兴的一种租车模式，车辆无人值守，用车全程App操作，以“分钟+公里”计算并提供汽车的即取即用、分时租赁服务，消费者可按个人用车需求预订车辆。GoFun出行已相继完成全国20余个城市的布局，其中不乏北京、上海、武汉、成都、南京等一、二线城市，更有西安、青岛、昆明、桂林、三亚等重要旅游地。</p>
+
+  <p>我们先来看一些关于车的基本的信息。</p>
+
+  <div style="display:flex;flex-wrap:wrap">
+    <div id="car_type" class="basic-info"></div>
+    <script src="car_type.js"></script>
+
+    <div id="brands" class="basic-info"></div>
+    <script src="brands.js"></script>
+
+    <div id="seats" class="basic-info"></div>
+    <script src="seats.js"></script>
+
+    <div id="years" class="basic-info"></div>
+    <script src="years.js"></script>
+  </div>
+
+  <p>从上面几幅图可以知道，GoFun绝大多数车型都是奇瑞的车。两座和四座的车是主流，车身小巧一方面比较节能，另一方面比较容易操作。</p>
+  <div class="center">
+    <img src="http://upimages.caijing.com.cn/2017/1124/1511524688941.jpg" class="car-pic"/>
+    <img src="http://upload.ceweekly.cn/2017/0327/1490585278302.jpg" class="car-pic"/>
+  </div>
+
+  <p>为什么是奇瑞的车占据绝大部分份额呢？从网络搜索到两条新闻可以知道奇瑞是GoFun的合作伙伴，这也不足为奇了：</p>
+  <ul>
+    <li>
+      <a href="http://www.chinanews.com/auto/2017/03-27/8184335.shtml" target="_blank">Gofun出行采购万辆奇瑞“小蚂蚁” 助力全国战略</a>
+    </li>
+    <li><a href="http://ifenxi.com/archives/2355" target="_blank">大众和奇瑞超2亿入股GoFun</a></li>
+  </ul>
+
+  <h2>业务概况</h2>
+  <p>
+    根据采集的数据，截止2018年1月26日，GoFun目前在全国总共有10327辆车。下图是车辆增长的情况。注意，车辆数量有时候会变少，这是因为数据采集时只能采集到没在使用的汽车，所以会少一些。整体趋势来讲呈平稳上升趋势，说明目前发展状况稳定。</p>
+
+  <div class="center">
+    <div id="car_increase" style="width: 600px;height:300px;"></div>
+    <script src="car_increase.js"></script>
+  </div>
+
+  <p>我们再来看看车辆的数量分布。可以看出来在四川、广东、陕西、福建等省有很多的车辆，属于比较正常的情况。比较奇怪的是上海的车辆数量很少，我猜测在上海早已有竞争对手占据了市场，还不如避而求其次。</p>
+
+  <div class="center">
+    <div id="distribution" style="width: 1000px;height:400px;"></div>
+    <script src="distribution.js"></script>
+  </div>
+
+  <p>由于GoFun必须在指定地点借还，停车场的数量多少就直接影响到用户体验。随着车的增长，停车场的数量也应该有相应的增长才对，从图里面也看出停车场的增长较为平稳。截止2018年1月26日，全国总共有2887个停车场。</p>
+  <div class="center">
+    <div id="parking_increase" style="width: 600px;height:300px;"></div>
+    <script src="parking_increase.js"></script>
+  </div>
+
+  <p>在停车场各省的分布情况中，几乎是和车辆的分布接近。</p>
+  <div id="park_distribution" style="width: 1000px;height:400px;"></div>
+  <script src="park_distribution.js"></script>
+
+  <p>
+    我们再来看一下多少汽车共用一个停车场的情况。从图上看出，平均来看大致一个停车场目前有3辆车的规模。如果一个停车场容纳的车越多，那么用户能够拿到车的几率越大，从这方面看也是一个好事。如果停车场的数量较少，网点不密集，就会影响用户的到达性。从这张图可以看到出湖北省的比例最高，从之前的车辆数量排名看湖北省排名第5，但停车场数量排名第10，停车场数量偏少。你可以在"停车场分布"图中，具体看看武汉市的网站分布。</p>
+  <div class="center">
+    <div id="average_cars_per_park" style="width: 500px;height:300px;"></div>
+    <script src="average_cars_per_park.js"></script>
+  </div>
+
+  <h2>停车场分布</h2>
+  <p>
+    下图是停车场的分布图，图上标记了全国的停车场的位置，可以自由浏览。以成都市为例，作为西部重点城市，共享汽车的发展和共享单车一样的迅猛。目前GoFun的覆盖面还是比较广，主要集中在人口密集的三环境内、南边的高新区。在西边的郫都区和东边的工业区龙泉也有所分布。但从图中可以看出显然北边和东北方向都没有太多的分布，这也和城市的发展密切相关。在西边的旅游城市都江堰，GoFun也有大量的网点，这也给出行的人带来了丰富的选择。</p>
+  <div class="center">
+    <div id="park_locations" style="width: 800px;height:500px;"></div>
+    <script src="park_locations.js"></script>
+  </div>
+
+
+  <h2>车辆流转情况</h2>
+  <p>下图是三个月内车的使用次数的分布。横坐标是使用的次数，纵坐标是次数对应的车的数量。近似一个正态分布，大约70%的车都在24到72的区间。平均起来每天0.3次到1次左右。</p>
+  <div class="center">
+    <div id="num_of_parkings" style="width: 900px;height:300px;"></div>
+    <script src="num_of_parkings.js"></script>
+  </div>
+
+  <p>
+    但使用次数只是运营情况的一种体现。如果每次使用时间比较短，停车时间比较长，对GoFun也不是一个好事。下图展示了停车时长的分布。横坐标代表停车的时长（小时）最长统计到70小时，纵坐标代表有多少车次。从图上峰值是在0到2小时之间。也有连续70小时，也有1000多车次有过这样长的停车时间。</p>
+  <div class="center">
+    <div id="parking_hist" style="width: 900px;height:300px;"></div>
+    <script src="parking_hist.js"></script>
+  </div>
+
+  <p>
+    下图展示了使用时长的分布。横坐标代表停车的时长（小时）最长统计到70小时，纵坐标代表有多少车次。对比停车时长的分布，使用时长的分布比较明显的集中在0到6小时之间，这也是共享出行的特点。由于GoFun有包天的租车服务，所以长期的出行的费用也是可以接受，长达70小时以上的使用时间也有1700多车次。</p>
+  <div class="center">
+    <div id="using_hist" style="width: 900px;height:300px;"></div>
+    <script src="using_hist.js"></script>
+  </div>
+
+  <h2>车的轨迹</h2>
+  <p>下面这个动画展示了一辆车的直线运动的轨迹。由于我们仅能得到出发、到达地无法获得中间的轨迹，所以只能这样按照直线标注。图上展示最近几个点，以及位置迁移情况。</p>
+  <div class='center'>
+    <div style="width:100%;height:600px;border:1px solid gray" id="container"></div>
+    <script type="text/javascript" src="car_movement.js"></script>
+  </div>
+
+  <h2>电池电量</h2>
+  <p>下面这张图展示某一辆车的电池变化情况，其中深色区域代表该车在停车场内没有被使用。</p>
+  <div class='center'>
+    <div id="battery_parking" style="width: 100%;height:300px;"></div>
+    <script src="battery_parking.js"></script>
+  </div>
+
+  <h2>总结</h2>
+  <p>根据以上的分析，GoFun目前的发展势头还是稳步增长。在路上我们也越来越多的看到共享汽车的身影。以成都为例，当停车场数量、车的数量越来越多以后，出行的局限性会变的更少，相信会俘获更多的用户。</p>
+</div>
+</body>
+
+</html>
