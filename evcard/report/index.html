@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>大数据看共享汽车——EVCard篇</title>
+  <script src="libs/lodash.min.js"></script>
+  <script src="constants.js"></script>
+  <script src="libs/echarts.min.js"></script>
+  <script type="text/javascript"
+          src="http://api.map.baidu.com/getscript?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM&services=&t=20180201111639"></script>
+  <script type="text/javascript"
+          src="http://echarts.baidu.com/examples/vendors/echarts/extension/bmap.js?_v_=1519710853840"></script>
+  <link rel="stylesheet" type="text/css" href="report.css">
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=edpTD0estvF7xjyFZ1Vda9Nme7Kif0k7"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+  <script type="text/javascript" src="libs/moment-with-locales.min.js"></script>
+</head>
+<body>
+<script>
+  themeName = 'default';
+</script>
+
+<div class="main">
+  <h1>大数据看共享汽车——EVCard篇</h1>
+
+  <p>去年2月份我做过共享单车的数据分析，也分析出一些有意思的点。从2017年10月1日开始，历时3个多月，我收集了EVCard和EVCard共享汽车的公开数据。下面整理成一个动态的报告，一起看一下共享汽车的现状。</p>
+
+  <p class="warning">注：该数据分析及报告仅代表个人意见，仅供参考，数据来自于API请求的结果，只包含公开的信息，不涉及用户信息。引用、使用该报告引起的任何后果（包括但不限于版权、侵犯法律法规）等，由使用方承担。</p>
+
+  <h2>基本信息</h2>
+
+  <p>
+    EVCARD品牌是上海国际汽车城新能源汽车运营服务有限公司开展的电动汽车分时租赁项目。 EVCARD电动汽车分时租赁是借助物联网技术实现的一种新型汽车分时租赁服务模式，实现了用户任意时间自行预订，任意网点自助取还的用车需求。
+    上海国际汽车城 新能源汽车运营服务有限公司是上海市第一家面向新能源汽车开展租赁和共享的专业公司，主要开展面向集团用户（B2B、B2B2C模式）以及私人用户（B2C）的新能源汽车长短租服务
+  <p>我们先来看一些关于车的基本的信息。</p>
+
+  <div class="center">
+    <div id="car_type" class="basic-info"></div>
+    <script src="car_type.js"></script>
+  </div>
+
+  <p>从上面图可以知道，EVCard的车品牌比较多，其中还是北汽、奇瑞、江淮的低端车型比较多，中端的较大的车型荣威E50也占据了11.03%的分量。高端的宝马i3也有，但极少。虽然<a href="https://www.evcard.com/models/detail/id/15.html">EVCard官网</a>上面虽然列出了车型，但可能更新较慢和数据中的车型不一致。</p>
+  <div class="center">
+    <img src="https://www.evcard.com/Uploads/image/2017/11/24/20171124152436_97492.png" class="car-pic"/>
+    <img src="https://www.evcard.com/Uploads/image/2017/11/24/20171124145021_21324.png" class="car-pic"/>
+  </div>
+  
+  <h2>业务概况</h2>
+  <p>
+    根据采集的数据，截止2017年11月底，EVCard目前在全国总共有12152辆车。下图是车辆增长的情况。整体趋势来讲呈平稳上升趋势，说明目前发展状况稳定。</p>
+
+  <div class="center">
+    <div id="car_increase" style="width: 600px;height:300px;"></div>
+    <script src="car_increase.js"></script>
+  </div>
+
+  <p>我们再来看看车辆的数量分布。可以看出来在上海以及附近的省份有很多的车辆，和GoFun正好是相反。</p>
+
+  <div class="center">
+    <div id="distribution" style="width: 1000px;height:400px;"></div>
+    <script src="distribution.js"></script>
+  </div>
+
+  <p>由于EVCard必须在指定地点借还，停车场的数量多少就直接影响到用户体验。随着车的增长，停车场的数量也应该有相应的增长才对，从图里面也看出停车场的增长较为平稳。截止2017年11月底，全国总共有5540个停车场，远超GoFun的2887个停车场。</p>
+  <div class="center">
+    <div id="parking_increase" style="width: 600px;height:300px;"></div>
+    <script src="parking_increase.js"></script>
+  </div>
+
+  <p>在停车场各省的分布情况中，几乎是和车辆的分布接近。</p>
+  <div id="park_distribution" style="width: 1000px;height:400px;"></div>
+  <script src="park_distribution.js"></script>
+
+  <p>
+    我们再来看一下多少汽车共用一个停车场的情况。从图上看出，平均来看大致一个停车场目前有2辆车的规模。如果一个停车场容纳的车越多，那么用户能够拿到车的几率越大，从这方面看也是一个好事。如果停车场的数量较少，网点不密集，就会影响用户的到达性。从这张图可以看到出有几个省的比例到了4到5，分析看来是由于这些省份的停车场数量偏少。你可以在"停车场分布"图中，具体看看停车点的分布。</p>
+  <div class="center">
+    <div id="average_cars_per_park" style="width: 500px;height:300px;"></div>
+    <script src="average_cars_per_park.js"></script>
+  </div>
+
+  <h2>停车场分布</h2>
+  <p>
+    下图是停车场的分布图，图上标记了全国的停车场的位置，可以自由浏览。上海作为EVCard的大本营，有非常丰富的网点，可想上海的用户出行是非常的方便的。</p>
+  <div class="center">
+    <div id="park_locations" style="width: 800px;height:500px;"></div>
+    <script src="park_locations.js"></script>
+  </div>
+
+
+  <h2>车辆流转情况</h2>
+  <p>下图是三个月内车的使用次数的分布。横坐标是使用的次数，纵坐标是次数对应的车的数量。0到70次占据了相当多的数量，然而130到170次之间也有一个小的起伏。平均下来有每天0.5到2次的使用频率还是不错了。</p>
+  <div class="center">
+    <div id="num_of_parkings" style="width: 900px;height:300px;"></div>
+    <script src="num_of_parkings.js"></script>
+  </div>
+
+  <p>
+    但使用次数只是运营情况的一种体现。如果每次使用时间比较短，停车时间比较长，对EVCard也不是一个好事。下图展示了停车时长的分布。横坐标代表停车的时长（小时）最长统计到70小时，纵坐标代表有多少车次。从图上看由于使用的频率比较高，停留时间集中在较短的一端比较多。</p>
+  <div class="center">
+    <div id="parking_hist" style="width: 900px;height:300px;"></div>
+    <script src="parking_hist.js"></script>
+  </div>
+
+  <p>
+    下图展示了使用时长的分布。横坐标代表停车的时长（小时）最长统计到70小时，纵坐标代表有多少车次。对比停车时长的分布，使用时长的分布比较明显的集中在0到6小时之间，这也是共享出行的特点。由于EVCard有包天的租车服务，所以长期的出行的费用也是可以接受，长达70小时以上的使用时间也有1300多车次。</p>
+  <div class="center">
+    <div id="using_hist" style="width: 900px;height:300px;"></div>
+    <script src="using_hist.js"></script>
+  </div>
+
+  <h2>车的轨迹</h2>
+  <p>下面这个动画展示了一辆车的直线运动的轨迹。由于我们仅能得到出发、到达地无法获得中间的轨迹，所以只能这样按照直线标注。图上展示最近几个点，以及位置迁移情况。</p>
+  <div class='center'>
+    <div style="width:100%;height:600px;border:1px solid gray" id="container"></div>
+    <script type="text/javascript" src="car_movement.js"></script>
+  </div>
+
+  <h2>电池电量</h2>
+  <p>下面这张图展示某一辆车的电池变化情况，其中深色区域代表该车在停车场内没有被使用。</p>
+  <div class='center'>
+    <div id="battery_parking" style="width: 100%;height:300px;"></div>
+    <script src="battery_parking.js"></script>
+  </div>
+
+  <h2>总结</h2>
+  <p>根据以上的分析，EVCard目前比较集中上海附近的省份，尤其是在上海集中优势的力量建立非常密集的网点，对于用户的使用无疑是一个好事。长期来看，停车场和车在稳步的发展，从小型车到大型车的车型的多样化，也为用户的不同出行带来了方便。。</p>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+.main {
+    margin: 100px 200px 100px 200px;
+    line-height: 1.5;
+}
+
+.basic-info {
+    width: 500px;
+    height: 500px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.car-pic {
+    height: 200px;
+    margin: 10px;
+}
+
+.warning {
+    color: red;
+}

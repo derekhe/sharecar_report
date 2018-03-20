@@ -1,6 +1,8 @@
-大数据看共享汽车——GoFun篇
+大数据看共享汽车
 =========================
-查看[在线报告](http://www.april1985.com/sharecar_report/report/index.html)
+查看GoFun篇[在线报告](http://www.april1985.com/sharecar_report/gofun/report/index.html)
+查看Evcard篇[在线报告](http://www.april1985.com/sharecar_report/evcard/report/index.html)
+
 
 源代码：
 * 代码仅供学习之用
